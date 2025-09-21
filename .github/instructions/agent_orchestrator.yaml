@@ -1,0 +1,54 @@
+version: 1
+orchestrator:
+    model: GPT-5 mini
+    auto: true
+    phases:
+        - id: planning
+          chatmode: 10-plan-readonly.chatmode.md
+          read_only: true
+        - id: analysis
+          chatmode: 20-analysis-readonly.chatmode.md
+          read_only: true
+        - id: design
+          chatmode: 30-design-ux.chatmode.md
+          read_only: true
+        - id: implement
+          chatmode: 40-implement-agent.chatmode.md
+          instructions: .github/instructions/agent_instructions_pack.md
+          active: true
+          outputs: [/docs/sdlc/04_implement.md, /ai/agent_memory.json]
+          on_complete: reviewer
+        - id: reviewer
+          model: GPT-5 mini
+          role: Principal Software Engineer Reviewer
+          instructions: .github/instructions/agent_instructions_pack.md
+          active: true
+          strict_gates: { typecheck: true, security: true }
+          outputs: [/docs/sdlc/04_implement_review.md, /ai/agent_memory.json]
+          fallback: implement
+        - id: testing
+          chatmode: 50-testing-agent.chatmode.md
+          active: true
+          outputs: [/docs/sdlc/05_testing.md]
+        - id: maintenance
+          chatmode: 60-maintenance-agent.chatmode.md
+          active: true
+          outputs: [/docs/sdlc/06_maintenance.md]
+memory: { file: /ai/agent_memory.json, auto_update: true }
+constraints:
+    coverage_target: 0.85
+    file_count_guard: 10
+    ask_before_terminal: true
+    auto_apply:
+        - /docs/sdlc/*.md
+        - /ai/agent_memory.json
+        - agent_output.json
+outputs:
+    - /docs/sdlc/01_planning.md
+    - /docs/sdlc/02_analysis.md
+    - /docs/sdlc/03_design_ux.md
+    - /docs/sdlc/04_implement.md
+    - /docs/sdlc/04_implement_review.md
+    - /docs/sdlc/05_testing.md
+    - /docs/sdlc/06_maintenance.md
+    - /ai/agent_memory.json
