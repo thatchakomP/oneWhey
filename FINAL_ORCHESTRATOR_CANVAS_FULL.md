@@ -23,12 +23,12 @@ If not set, config defaults are used.
 > Paste this into any repo and copy each block to the **exact path** shown.  
 > This orchestrator runs **all phases automatically on every message** and adds:
 >
-> - Claude‑style modular, self-verifying coding
-> - Dedicated **Reviewer** phase (strict gates: **typecheck + security**)
-> - Reviewer reports under `/docs/sdlc/04_implement_review.md`
-> - Integrated **ReAct** (Reason + Act), **Tree-of-Thoughts** (ToT), and **Chain-of-Verification** (CoVe)
-> - Bounded, safe, auditable reasoning recorded in `/ai/agent_memory.json`
-> - Universal **profile** + **checklist** runner (no external Auditor required)
+> -   Claude‑style modular, self-verifying coding
+> -   Dedicated **Reviewer** phase (strict gates: **typecheck + security**)
+> -   Reviewer reports under `/docs/sdlc/04_implement_review.md`
+> -   Integrated **ReAct** (Reason + Act), **Tree-of-Thoughts** (ToT), and **Chain-of-Verification** (CoVe)
+> -   Bounded, safe, auditable reasoning recorded in `/ai/agent_memory.json`
+> -   Universal **profile** + **checklist** runner (no external Auditor required)
 
 ---
 
@@ -131,7 +131,7 @@ tools:
 'terminal.run',
 'run_tests',
 ]
-model: GPT-4.1
+model: GPT-5 mini
 
 #
 
@@ -143,14 +143,14 @@ Respect repo standards under `/.github/instructions/*.instructions.md`, keep sec
 
 > 🆕 Frameworks:
 >
-> - **ReAct** in Design & Implementation (reason→act loops).
-> - **ToT** in Design (3+ candidates) and optional in Maintenance.
-> - **CoVe** in Implementation & Reviewer (typecheck + security + tests verification).
+> -   **ReAct** in Design & Implementation (reason→act loops).
+> -   **ToT** in Design (3+ candidates) and optional in Maintenance.
+> -   **CoVe** in Implementation & Reviewer (typecheck + security + tests verification).
 
 # Inputs & Defaults
 
-- Read `/.github/sdlc.profile.yaml` (if present). Select `active_profile` (or autodetect). Use `defaults` for constraints, phase rules, CLI non-interactive, `file_count_guard`, `allowed_auto_apply`.
-- Accept optional inline YAML in the user message to override profile values. Example:
+-   Read `/.github/sdlc.profile.yaml` (if present). Select `active_profile` (or autodetect). Use `defaults` for constraints, phase rules, CLI non-interactive, `file_count_guard`, `allowed_auto_apply`.
+-   Accept optional inline YAML in the user message to override profile values. Example:
     ```yaml
     feature: Add vetted aggregator partners
     profile: web-node
@@ -234,7 +234,7 @@ Planning phase — read-only plan authoring
     File Goal: Planning phase chatmode for SDLC plan authoring. [NEEDS-INPUT: Add specific behaviors/goals]
 
 tools: ['codebase','search','usages','fetch','githubRepo','findTestFiles']
-model: GPT-4.1
+model: GPT-5 mini
 
 #
 
@@ -260,7 +260,7 @@ description: |
     Memory Schema: /ai/agent_memory.json
     File Goal: Analysis phase chatmode for SDLC requirements and risk analysis. [NEEDS-INPUT: Add specific behaviors/goals]
 tools: ['codebase', 'search', 'usages', 'fetch', 'githubRepo']
-model: GPT-4.1
+model: GPT-5 mini
 #
 
 Act as a systems analyst. Refine requirements, define measurable ACs, perform **Risk & Impact**
@@ -282,7 +282,7 @@ description: |
     Memory Schema: /ai/agent_memory.json
     File Goal: Design phase chatmode for UX/UI expert deliverables and alternatives. [NEEDS-INPUT: Add specific behaviors/goals]
 tools: ['codebase', 'search', 'fetch', 'usages']
-model: GPT-4.1
+model: GPT-5 mini
 #
 
 You are a **UX/UI expert**. Deliver: personas, flows/journeys, wireframe outlines (ASCII or narrative),
@@ -322,7 +322,7 @@ tools:
                 'terminal.run',
                 'run_tests',
         ]
-model: GPT-4.1
+model: GPT-5 mini
 #
 
 Act as a **SET**. Implement changes safely with tests. For every change: explain intent, show a **diff** for review,
@@ -359,7 +359,7 @@ tools:
                 'run_tests',
                 'terminal.run',
         ]
-model: GPT-4.1
+model: GPT-5 mini
 #
 
 Focus on tests and quality gates. Add/adjust tests, close edge-case gaps, craft fixtures, and drive coverage to ≥ 85% (tune per repo).
@@ -394,7 +394,7 @@ tools:
                 'terminal.run',
                 'run_tests',
         ]
-model: GPT-4.1
+model: GPT-5 mini
 #
 
 Perform safe refactors (no behavior change), cautious dependency updates, and security hardening (headers, CSP, rate-limit).
@@ -528,7 +528,7 @@ applyTo: '**'
 ### >>> path: `/.github/instructions/agent_instructions_pack.md` **(NEW)**
 
 ```md
-# GPT-4.1 Claude-Optimized Agent Instructions Pack
+# GPT-5 mini Claude-Optimized Agent Instructions Pack
 
 Includes two instruction sets:
 
@@ -559,7 +559,7 @@ Includes two instruction sets:
 ```yaml
 version: 1
 orchestrator:
-    model: gpt-4.1
+    model: GPT-5 mini
     auto: true
     phases:
         - id: planning
@@ -578,7 +578,7 @@ orchestrator:
           outputs: [/docs/sdlc/04_implement.md, /ai/agent_memory.json]
           on_complete: reviewer
         - id: reviewer
-          model: gpt-4.1
+          model: GPT-5 mini
           role: Principal Software Engineer Reviewer
           instructions: .github/instructions/agent_instructions_pack.md
           active: true
@@ -618,7 +618,7 @@ outputs:
 ```md
 ---
 mode: 'agent'
-model: GPT-4.1
+model: GPT-5 mini
 tools:
     [
         'codebase',
@@ -661,7 +661,7 @@ description: 'Run tasks from /docs/sdlc/tasks.yaml (or tasks.md), using defaults
 ```md
 ---
 mode: 'agent'
-model: GPT-4.1
+model: GPT-5 mini
 tools:
     [
         'codebase',
@@ -845,7 +845,7 @@ items:
 ```md
 # Orchestrator Quick-Start
 
-- Mode: 00-orchestrator (GPT-4.1)
+- Mode: 00-orchestrator (GPT-5 mini)
 - Chain: Plan → Analysis → Design → Implement → Reviewer → Testing → Maintenance
 - Memory: /ai/agent_memory.json
 - Profiles: /.github/sdlc.profile.yaml

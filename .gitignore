@@ -1,0 +1,53 @@
+node_modules
+
+# npm / package manager
+npm-debug.log*
+yarn-error.log*
+pnpm-lock.yaml
+
+# Next.js build / cache
+/.next/
+/out/
+/build/
+/dist/
+
+# Tailwind/PostCSS cache
+.cache/
+.cache-loader/
+
+# Local env files (secrets)
+.env
+.env.*.local
+.env.local
+.env.production.local
+.env.development.local
+
+# Logs and reports
+coverage/
+.nyc_output/
+*.lcov
+*.log
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Test / CI artifacts
+/coverage/
+/reports/
+/test-results/
+
+# Misc
+/.cache/
+/tmp/
+/temp/
+/*.pem
+/*.key
+
+# Ignore built static exports or user-specific generated files
+/public/_next/
+
