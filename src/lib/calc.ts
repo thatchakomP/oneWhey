@@ -7,7 +7,7 @@ export interface InputPayload {
     age: number
     height: number
     weight: number
-    units: Units
+    units?: Units
     activity: Activity
     bodyFat?: number
 }
@@ -21,12 +21,13 @@ const activityMultiplier: Record<Activity, number> = {
 }
 
 export function toMetric(input: InputPayload) {
-    if (input.units === 'metric') {
-        return { weightKg: input.weight, heightCm: input.height }
+    // Default to metric when units is not provided. Only convert when explicitly imperial.
+    if (input.units === 'imperial') {
+        const weightKg = input.weight * 0.45359237
+        const heightCm = input.height * 2.54
+        return { weightKg, heightCm }
     }
-    const weightKg = input.weight * 0.45359237
-    const heightCm = input.height * 2.54
-    return { weightKg, heightCm }
+    return { weightKg: input.weight, heightCm: input.height }
 }
 
 export function bmrMifflinStJeor(sex: Sex, age: number, weightKg: number, heightCm: number) {
@@ -41,9 +42,11 @@ export function bmrKatchMcArdle(weightKg: number, bodyFatPercent: number) {
 
 export function computeBmr(input: InputPayload) {
     const { weightKg, heightCm } = toMetric(input)
+    // If bodyFat is provided, prefer Katch-McArdle estimate (uses lean mass)
     if (typeof input.bodyFat === 'number' && !Number.isNaN(input.bodyFat)) {
         return bmrKatchMcArdle(weightKg, input.bodyFat)
     }
+    // Default: Mifflin-St Jeor
     return bmrMifflinStJeor(input.sex, input.age, weightKg, heightCm)
 }
 
@@ -65,9 +68,29 @@ export function computeAll(input: InputPayload) {
     const bmr = computeBmr(input)
     const tdee = computeTdee(bmr, input.activity)
     const goals = goalsFromTdee(tdee)
-    return {
+    // Macros (simple defaults):
+    // protein: 1.8 g per kg bodyweight
+    // fat: 25% of calories -> grams (9 kcal per g)
+    // carbs: remaining calories -> grams (4 kcal per g)
+    const { weightKg } = toMetric(input)
+    const proteinG = Math.round(1.8 * weightKg)
+    const fatCalories = Math.round(tdee * 0.25)
+    const fatG = Math.round(fatCalories / 9)
+    const remainingCalories = Math.round(tdee - (proteinG * 4 + fatG * 9))
+    const carbsG = Math.max(0, Math.round(remainingCalories / 4))
+
+    const result = {
         bmr: Math.round(bmr),
         tdee: Math.round(tdee),
         goals,
+        macros: {
+            protein: proteinG,
+            fat: fatG,
+            carbs: carbsG,
+        },
     }
+
+    return result
 }
+
+export type ComputeResult = ReturnType<typeof computeAll>

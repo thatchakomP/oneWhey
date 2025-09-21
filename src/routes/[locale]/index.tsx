@@ -1,10 +1,10 @@
-import React from 'react'
-import { useMemo } from 'react'
+import React, { useState } from 'react'
 import { useIntl } from 'react-intl'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { inputSchema, Input } from '../../lib/schema'
-import { computeAll } from '../../lib/calc'
+import { computeAll, ComputeResult } from '../../lib/calc'
+import ResultCard from '../../components/ResultCard'
 
 export default function CalculatorPage() {
     const intl = useIntl()
@@ -16,230 +16,183 @@ export default function CalculatorPage() {
         formState: { errors },
     } = useForm<Input>({
         resolver: zodResolver(inputSchema),
-        defaultValues: {
-            sex: 'male',
-            age: 30,
-            height: 180,
-            weight: 75,
-            units: 'metric',
-            activity: 'moderate',
-        },
+        mode: 'onSubmit',
     })
 
-    const values = watch()
+    const [result, setResult] = useState<null | ComputeResult>(null)
+    const [resultKey, setResultKey] = useState<number>(0)
 
-    const result = useMemo(() => {
+    const onSubmit = (data: Input) => {
         try {
-            return computeAll(values as any)
+            const r = computeAll(data as any)
+            setResult(r)
+            setResultKey((k) => k + 1)
         } catch (e) {
-            return null
+            setResult(null)
         }
-    }, [values])
+    }
 
     return (
-        <main className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-            <div className="w-full max-w-6xl bg-white rounded-lg shadow-md p-6">
-                <h1 className="text-2xl font-semibold text-gray-900 mb-4">
-                    {intl.formatMessage({ id: 'title' })}
-                </h1>
+        <main className="min-h-screen flex items-start justify-center py-8 px-4">
+            <div className="container max-w-lg">
+                <div className="scandi-card p-6">
+                    <h1 className="text-2xl font-semibold text-gray-900 mb-4">
+                        {intl.formatMessage({ id: 'title' })}
+                    </h1>
+                    <form
+                        aria-label={intl.formatMessage({ id: 'title' })}
+                        onSubmit={handleSubmit(onSubmit)}
+                        className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start"
+                    >
+                        <fieldset className="col-span-1 md:col-span-2 border-b pb-4">
+                            <legend className="sr-only">
+                                {intl.formatMessage({ id: 'sex.label' })}
+                            </legend>
+                            <div
+                                role="radiogroup"
+                                aria-label={intl.formatMessage({ id: 'sex.label' })}
+                                className="inline-flex bg-panel p-1 rounded-full"
+                            >
+                                {(['male', 'female'] as const).map((s) => {
+                                    const selected = watch('sex') === s
+                                    return (
+                                        <label
+                                            key={s}
+                                            className={`px-4 py-1 rounded-full text-sm cursor-pointer transition duration-150 ease-out ${
+                                                selected
+                                                    ? 'bg-[var(--accent)] text-white'
+                                                    : 'text-muted'
+                                            }`}
+                                        >
+                                            <input
+                                                {...register('sex')}
+                                                type="radio"
+                                                value={s}
+                                                className="sr-only"
+                                            />
+                                            {intl.formatMessage({
+                                                id: s === 'male' ? 'sex.male' : 'sex.female',
+                                            })}
+                                        </label>
+                                    )
+                                })}
+                            </div>
+                        </fieldset>
 
-                <form
-                    aria-label={intl.formatMessage({ id: 'title' })}
-                    onSubmit={handleSubmit(() => {})}
-                    className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-1 st:grid-cols-2 lt:grid-cols-2 sd:grid-cols-3 gap-6 items-start"
-                >
-                    <fieldset className="col-span-1 md:col-span-2 border-b pb-2">
-                        <legend className="sr-only">
-                            {intl.formatMessage({ id: 'sex.label' }) || 'Sex'}
-                        </legend>
-                        <div className="flex gap-4">
-                            <label className="inline-flex items-center gap-2">
-                                <input
-                                    className="h-4 w-4 text-indigo-600"
-                                    {...register('sex')}
-                                    type="radio"
-                                    value="male"
-                                    defaultChecked
-                                />
-                                <span className="text-sm text-gray-700">
-                                    {intl.formatMessage({ id: 'sex.male' })}
-                                </span>
+                        <div className="flex flex-col">
+                            <label htmlFor="age" className="text-xl font-medium text-text">
+                                {intl.formatMessage({ id: 'age.label' })}
                             </label>
-                            <label className="inline-flex items-center gap-2">
-                                <input
-                                    className="h-4 w-4 text-indigo-600"
-                                    {...register('sex')}
-                                    type="radio"
-                                    value="female"
-                                />
-                                <span className="text-sm text-gray-700">
-                                    {intl.formatMessage({ id: 'sex.female' })}
-                                </span>
-                            </label>
-                        </div>
-                    </fieldset>
-
-                    <div className="flex flex-col">
-                        <label htmlFor="age" className="text-sm font-medium text-gray-700">
-                            {intl.formatMessage({ id: 'age.label' })}
-                        </label>
-                        <input
-                            id="age"
-                            type="number"
-                            {...register('age', { valueAsNumber: true })}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                        />
-                        {errors.age && (
-                            <p role="alert" className="text-sm text-red-600">
-                                {String(errors.age.message)}
-                            </p>
-                        )}
-                    </div>
-
-                    <div className="flex flex-col">
-                        <label htmlFor="height" className="text-sm font-medium text-gray-700">
-                            {intl.formatMessage({ id: 'height.label' })}
-                        </label>
-                        <input
-                            id="height"
-                            type="number"
-                            {...register('height', { valueAsNumber: true })}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                        />
-                        {errors.height && (
-                            <p role="alert" className="text-sm text-red-600">
-                                {String(errors.height.message)}
-                            </p>
-                        )}
-                    </div>
-
-                    <div className="flex flex-col">
-                        <label htmlFor="weight" className="text-sm font-medium text-gray-700">
-                            {intl.formatMessage({ id: 'weight.label' })}
-                        </label>
-                        <input
-                            id="weight"
-                            type="number"
-                            {...register('weight', { valueAsNumber: true })}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                        />
-                        {errors.weight && (
-                            <p role="alert" className="text-sm text-red-600">
-                                {String(errors.weight.message)}
-                            </p>
-                        )}
-                    </div>
-
-                    <div className="col-span-1 st:col-span-2 sd:col-span-2">
-                        <p className="text-sm font-medium text-gray-700 mb-1">
-                            {intl.formatMessage({ id: 'units.metric' })} /{' '}
-                            {intl.formatMessage({ id: 'units.imperial' })}
-                        </p>
-                        <div className="flex gap-4">
-                            <label className="inline-flex items-center gap-2">
-                                <input
-                                    className="h-4 w-4 text-indigo-600"
-                                    {...register('units')}
-                                    type="radio"
-                                    value="metric"
-                                    defaultChecked
-                                />
-                                <span className="text-sm text-gray-700">
-                                    {intl.formatMessage({ id: 'units.metric' })}
-                                </span>
-                            </label>
-                            <label className="inline-flex items-center gap-2">
-                                <input
-                                    className="h-4 w-4 text-indigo-600"
-                                    {...register('units')}
-                                    type="radio"
-                                    value="imperial"
-                                />
-                                <span className="text-sm text-gray-700">
-                                    {intl.formatMessage({ id: 'units.imperial' })}
-                                </span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col">
-                        <label htmlFor="bodyFat" className="text-sm font-medium text-gray-700">
-                            Body-fat % (optional)
-                        </label>
-                        <input
-                            id="bodyFat"
-                            type="number"
-                            {...register('bodyFat', { valueAsNumber: true })}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                        />
-                    </div>
-
-                    <div className="flex flex-col">
-                        <label htmlFor="activity" className="text-sm font-medium text-gray-700">
-                            Activity
-                        </label>
-                        <select
-                            id="activity"
-                            {...register('activity')}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                        >
-                            <option value="sedentary">
-                                {intl.formatMessage({ id: 'activity.sedentary' })}
-                            </option>
-                            <option value="light">
-                                {intl.formatMessage({ id: 'activity.light' })}
-                            </option>
-                            <option value="moderate">
-                                {intl.formatMessage({ id: 'activity.moderate' })}
-                            </option>
-                            <option value="very">
-                                {intl.formatMessage({ id: 'activity.very' })}
-                            </option>
-                            <option value="athlete">
-                                {intl.formatMessage({ id: 'activity.athlete' })}
-                            </option>
-                        </select>
-                    </div>
-
-                    {/* Results panel: on sd (desktop) show as right-side panel, otherwise full width below form fields */}
-                    <aside className="col-span-1 sd:col-span-1 sd:row-span-3 mt-2 sd:mt-0">
-                        <div
-                            aria-live="polite"
-                            className="bg-gray-50 border rounded-md p-4 h-full sticky top-6"
-                        >
-                            {result ? (
-                                <div className="flex flex-col gap-4">
-                                    <div>
-                                        <div className="text-sm text-gray-500">
-                                            {intl.formatMessage({ id: 'results.bmr' })}
-                                        </div>
-                                        <div className="text-lg font-semibold text-gray-900">
-                                            {result.bmr} kcal
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="text-sm text-gray-500">
-                                            {intl.formatMessage({ id: 'results.tdee' })}
-                                        </div>
-                                        <div className="text-lg font-semibold text-gray-900">
-                                            {result.tdee} kcal
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="text-sm text-gray-500">Goals</div>
-                                        <div className="text-lg font-semibold text-gray-900">
-                                            Cut -20%: {result.goals.cut20} kcal
-                                        </div>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="text-sm text-gray-500">
-                                    Enter valid inputs to see results.
-                                </div>
+                            <input
+                                id="age"
+                                type="number"
+                                placeholder="30"
+                                {...register('age', { valueAsNumber: true })}
+                                className="mt-2 scandi-input focus:outline-none focus-ring w-full"
+                            />
+                            {errors.age && (
+                                <p role="alert" className="text-sm text-red-600">
+                                    {String(errors.age.message)}
+                                </p>
                             )}
                         </div>
-                    </aside>
-                </form>
+
+                        <div className="flex flex-col">
+                            <label htmlFor="height" className="text-xl font-medium text-text">
+                                {intl.formatMessage({ id: 'height.label' })}
+                            </label>
+                            <input
+                                id="height"
+                                type="number"
+                                placeholder="170 cm"
+                                {...register('height', { valueAsNumber: true })}
+                                className="mt-2 scandi-input focus:outline-none focus-ring w-full"
+                            />
+                            {errors.height && (
+                                <p role="alert" className="text-sm text-red-600">
+                                    {String(errors.height.message)}
+                                </p>
+                            )}
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label htmlFor="weight" className="text-xl font-medium text-text">
+                                {intl.formatMessage({ id: 'weight.label' })}
+                            </label>
+                            <input
+                                id="weight"
+                                type="number"
+                                placeholder="65 kg"
+                                {...register('weight', { valueAsNumber: true })}
+                                className="mt-2 scandi-input focus:outline-none focus-ring w-full"
+                            />
+                            {errors.weight && (
+                                <p role="alert" className="text-sm text-red-600">
+                                    {String(errors.weight.message)}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Units control removed - using Metric fields (kg, cm) only */}
+
+                        {/* Body fat removed per request; using Mifflin-St Jeor and macros instead */}
+
+                        <div className="flex flex-col">
+                            <label htmlFor="activity" className="text-xl font-medium text-text">
+                                Activity
+                            </label>
+                            <select
+                                id="activity"
+                                {...register('activity')}
+                                className="mt-2 scandi-input focus:outline-none focus-ring w-full"
+                            >
+                                <option value="sedentary">
+                                    {intl.formatMessage({ id: 'activity.sedentary' })}
+                                </option>
+                                <option value="light">
+                                    {intl.formatMessage({ id: 'activity.light' })}
+                                </option>
+                                <option value="moderate">
+                                    {intl.formatMessage({ id: 'activity.moderate' })}
+                                </option>
+                                <option value="very">
+                                    {intl.formatMessage({ id: 'activity.very' })}
+                                </option>
+                                <option value="athlete">
+                                    {intl.formatMessage({ id: 'activity.athlete' })}
+                                </option>
+                            </select>
+                        </div>
+
+                        {/* Calculate button and Results panel: button submits form; on sd (desktop) results show as right-side panel */}
+                        <div className="col-span-1 md:col-span-2 flex items-center gap-4">
+                            <button
+                                type="submit"
+                                className="px-6 py-3 rounded-2xl bg-[var(--accent)] text-white font-medium"
+                            >
+                                Calculate
+                            </button>
+                        </div>
+                        <aside className="col-span-1 md:col-span-1">
+                            <div aria-live="polite" className="h-full">
+                                {result ? (
+                                    <div key={resultKey} className="animate-scandi-fade">
+                                        <ResultCard
+                                            bmr={result.bmr}
+                                            tdee={result.tdee}
+                                            goals={result.goals}
+                                            macros={result.macros}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="text-sm text-muted">
+                                        {intl.formatMessage({ id: 'placeholders.enter_values' })}
+                                    </div>
+                                )}
+                            </div>
+                        </aside>
+                    </form>
+                </div>
             </div>
         </main>
     )

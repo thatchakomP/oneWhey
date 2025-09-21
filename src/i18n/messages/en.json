@@ -1,17 +1,19 @@
 {
-    "title": "BMR / TDEE Calculator",
+    "title": "BMR & TDEE Calculator",
     "sex.male": "Male",
     "sex.female": "Female",
     "age.label": "Age",
     "height.label": "Height",
     "weight.label": "Weight",
-    "units.metric": "Metric (kg, cm)",
-    "units.imperial": "Imperial (lb, in)",
+    "units.metric": "Metric",
+    "units.imperial": "Imperial",
     "activity.sedentary": "Sedentary",
     "activity.light": "Lightly active",
     "activity.moderate": "Moderately active",
     "activity.very": "Very active",
     "activity.athlete": "Athlete",
     "results.bmr": "BMR",
-    "results.tdee": "TDEE"
+    "results.tdee": "TDEE",
+    "actions.calculate": "Calculate",
+    "placeholders.enter_values": "Please enter values"
 }

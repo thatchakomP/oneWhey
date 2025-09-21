@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    --bg: #ffffff;
+    --panel: #f7f7f7;
+    --text: #111827;
+    --muted: #6b7280;
+    --stroke: #e5e7eb;
+    --accent: #8aa899; /* sage */
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+html,
+body,
+#root {
+    height: 100%;
+}
+
+body {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+        'Helvetica Neue', Arial;
+    color: var(--text);
+    background-color: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.scandi-card {
+    background: var(--bg);
+    border: 1px solid var(--stroke);
+    border-radius: 1rem; /* rounded-2xl */
+    box-shadow: 0 2px 8px rgba(17, 24, 39, 0.04);
+}
+
+.scandi-input {
+    border-radius: 0.75rem; /* rounded-xl */
+    border: 1px solid #d1d5db; /* gray-300 */
+    padding: 0.75rem 1rem;
+}
+
+.focus-ring {
+    box-shadow: 0 0 0 4px rgba(17, 24, 39, 0.06);
+}
+
+/* Accessibility: visible focus ring for keyboard users */
+:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(17, 24, 39, 0.08);
+    border-radius: 0.75rem;
+}
+
+/* Disabled state */
+.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Respect reduce motion */
+@media (prefers-reduced-motion: reduce) {
+    .animate-scandi-fade {
+        transition: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+    }
+}

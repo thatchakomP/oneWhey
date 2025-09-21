@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import LocaleApp from './routes/LocaleApp'
 import './styles.css'
+import './index.css'
 import '../public/manifest.webmanifest'
 
 createRoot(document.getElementById('root')!).render(

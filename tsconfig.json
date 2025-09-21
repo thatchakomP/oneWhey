@@ -15,5 +15,6 @@
         "strict": true,
         "forceConsistentCasingInFileNames": true
     },
-    "include": ["src/**/*"]
+    "include": ["src/**/*"],
+    "exclude": ["src/tests/**/*", "tests/**/*"]
 }
