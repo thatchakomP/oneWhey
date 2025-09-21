@@ -2,16 +2,18 @@
 
 ## Summary
 
-This document translates the user's REQUIREMENTS.md for the BMR/TDEE Calculator (MVP) into a concise planning artifact for implementation.
+This document translates the user's REQUIREMENTS.md for the BMR/TDEE Calculator (MVP) into a concise planning artifact for implementation. The user requested to use plain React and pnpm for package management instead of Next.js/npm from the original REQUIREMENTS; the plan below reflects that choice and calls out divergences from the original spec.
 
 ## Scope
 
--   Build an installable, responsive web app using Next.js (App Router) + TypeScript + Tailwind CSS + next-intl + next-pwa.
--   Two locales: en (default) and th.
--   PWA installable and offline-friendly for core calculator.
--   No auth, database, analytics, or advanced animations for MVP.
-
-## Acceptance Criteria (measurable)
+-   Scope
+-
+-   -   Build an installable, responsive web app using React + TypeScript + Tailwind CSS. Use pnpm as the package manager.
+-
+-   -   Note: REQUIREMENTS.md originally specified Next.js (App Router), next-intl, and next-pwa. Switching to plain React means we will replace Next-specific features with suitable alternatives:
+-   -   Routing & i18n: use react-router (or a minimal router) + react-intl (or react-i18next) for locale paths `/en` and `/th`.
+-   -   PWA: use Workbox or vite-plugin-pwa (depending on the bundler) to provide manifest and service worker functionality.
+-   -   File layout will be adjusted from `app/[locale]` to a React-centric `src/pages` or `src/routes` structure per chosen bundler.
 
 1. Calculator UI at `/en` and `/th` with inputs: sex, age, height, weight, units toggle, activity level, optional body-fat%.
 2. Correct BMR/TDEE calculations (Mifflin-St Jeor and Katch-McArdle) and goal presets. Numbers rounded to nearest kcal.
@@ -22,14 +24,26 @@ This document translates the user's REQUIREMENTS.md for the BMR/TDEE Calculator 
 ## Assumptions & Unknowns
 
 -   Assume Node 18+ and Next.js 14+ per REQUIREMENTS.
+    Implementation Plan (high level)
+
+1. Initialize a React + TypeScript project using Vite (recommended) or Create React App, with pnpm as the package manager and Tailwind CSS.
+2. Add i18n routing for `/en` and `/th` using `react-router` (or file-based routes if using frameworks) and `react-intl`/`react-i18next` for message bundles.
+3. Implement `lib/calc.ts` with unit conversion and formulas; add zod schema in `lib/schema.ts` and wire to `react-hook-form`.
+4. Build accessible form components in `components/` and page UI under `src/routes` or `src/pages` depending on bundler choice; ensure locale-aware routing.
+5. Add PWA support using `vite-plugin-pwa` (if Vite) or Workbox (if CRA/Webpack) with a manifest and service worker to cache assets and enable offline use.
+6. Add tests for `lib/calc.ts` (Vitest or Jest) and a basic React Testing Library smoke test for the UI.
+
 -   Default coverage target: 0.8 (can be adjusted via sdlc profile).
 -   Unknown: preferred design language (component library); will use Tailwind primitives unless the user requests a UI library.
 
-## Implementation Plan (high level)
+Code Touchpoints
 
-1. Initialize Next.js app (App Router) with TypeScript and Tailwind.
-2. Add `next-intl` routing under `/app/[locale]` and create i18n messages.
-3. Implement `lib/calc.ts` with unit conversion and formulas; add zod schema in `lib/schema.ts`.
+-   `src/lib/calc.ts` — formulas + conversions
+-   `src/lib/schema.ts` — zod validation
+-   `src/routes/[locale]/index.tsx` or `src/pages/[locale]/index.tsx` — calculator UI (React routing equivalent)
+-   `src/components/InputField.tsx`, `LangSwitcher.tsx`
+-   `manifest.webmanifest`, PWA service-worker config (via vite-plugin-pwa or Workbox)
+
 4. Build accessible form components in `components/` and page UI in `app/[locale]/page.tsx`.
 5. Add `next-pwa` configuration and manifest; ensure offline caching for core assets and the calculator logic.
 6. Add tests for `lib/calc.ts` and a basic RTL test for the UI (smoke path).

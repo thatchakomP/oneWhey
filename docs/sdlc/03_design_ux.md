@@ -32,6 +32,25 @@
 
 -   Choose Minimal Tailwind (1) for MVP to minimize dependencies and match constraints. Add Headless UI later if user requests.
 
+## React-specific Layout & Routing Notes
+
+-   Since we're using plain React (not Next), we'll implement locale-prefixed routes with `react-router` and a top-level `/:locale/*` route. The app root will mount a `LocaleProvider` that loads messages from `src/i18n/messages/{locale}.json`.
+-   Directory structure suggestion:
+
+    src/
+    routes/
+    [locale]/
+    index.tsx # calculator page
+    components/
+    InputField.tsx
+    LangSwitcher.tsx
+    i18n/
+    messages/
+    en.json
+    th.json
+
+-   PWA install flow: include a visible install button in the header when the `beforeinstallprompt` event is fired (desktop/mobile) and provide guidance for iOS where install is manual.
+
 ## Wireframes / Layout Notes
 
 -   Single-column responsive form with labeled inputs and helper text.

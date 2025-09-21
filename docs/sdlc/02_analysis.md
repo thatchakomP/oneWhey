@@ -2,23 +2,24 @@
 
 ## Refined Requirements
 
--   Must support `/app/[locale]` routing for `en` (default) and `th`. Locale prefix always present.
--   All UI strings via `next-intl` message files under `src/i18n/messages/{en,th}.json`.
+-   Must support locale-prefixed routing `/en` and `/th`. When using plain React (no Next), implement this with `react-router` and a top-level route `/:locale/*` or equivalent.
+-   All UI strings must live in `src/i18n/messages/{en,th}.json` and be provided via `react-intl` or `react-i18next` (no hardcoded strings).
 -   Calculator formulas deterministic and must pass unit tests.
 
 ## Measurable Acceptance Criteria
 
 1. End-to-end: visiting `/en` and completing the form produces expected BMR/TDEE within ±1 kcal of known values.
-2. Unit coverage: `lib/calc.ts` ≥ 90% lines covered by unit tests.
-3. PWA: app shows install prompt on supporting platforms and functions offline for previously loaded pages.
+2. Unit coverage: `lib/calc.ts` ≥ 90% lines covered by unit tests. Prefer using Vitest (Vite) or Jest depending on the bundler.
+3. PWA: app shows install prompt on supporting platforms and functions offline for previously loaded pages. Use `vite-plugin-pwa` for Vite or Workbox for Webpack/CRA.
 
 ## Dependency Map
 
--   next@14+, react, react-dom
--   next-intl for i18n routing and translations
--   next-pwa for service worker and manifest
--   tailwindcss for styling
--   zod + react-hook-form for validation
+-- react, react-dom
+-- react-router (or chosen routing solution) for locale-prefixed routes
+-- react-intl or react-i18next for translations
+-- vite + vite-plugin-pwa (recommended) or CRA + Workbox for PWA
+-- tailwindcss for styling
+-- zod + react-hook-form for validation
 
 ## Data Flow
 
