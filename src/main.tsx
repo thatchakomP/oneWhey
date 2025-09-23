@@ -20,8 +20,7 @@ createRoot(document.getElementById('root')!).render(
 // optional: listen for beforeinstallprompt to show an install CTA
 window.addEventListener('beforeinstallprompt', (e: any) => {
     // Prevent the mini-infobar from appearing on mobile
-    e.preventDefault()(
-        // Save the event for later use
-        window as any
-    ).__deferredInstallPrompt = e
+    e.preventDefault()
+    // Save the event for later use
+    ;(window as any).__deferredInstallPrompt = e
 })

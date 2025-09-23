@@ -1,5 +1,6 @@
 {
     "title": "เครื่องคิดค่า BMR & TDEE",
+    "sex.label": "เพศ",
     "sex.male": "ชาย",
     "sex.female": "หญิง",
     "age.label": "อายุ",

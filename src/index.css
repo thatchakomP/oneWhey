@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@8..144,700&display=swap');
 
 :root {
     --bg: #ffffff;
@@ -7,6 +8,24 @@
     --muted: #6b7280;
     --stroke: #e5e7eb;
     --accent: #8aa899; /* sage */
+    --accent-pressed: #718e83;
+
+    /* spacing tokens (8pt baseline) */
+    --space-xxs: 4px;
+    --space-xs: 8px;
+    --space-sm: 12px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+
+    /* type scale */
+    --type-base: 1rem; /* 16px */
+    --type-scale: 1.25;
+    --type-h1: 1.5rem; /* 24px */
+    --type-h2: 1.25rem; /* 20px */
+    --type-number: 2.25rem; /* 36px for numeric emphasis */
+
+    --shadow-soft: 0 6px 20px rgba(17, 24, 39, 0.06);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -39,14 +58,10 @@ body {
     background: var(--bg);
     border: 1px solid var(--stroke);
     border-radius: 1rem; /* rounded-2xl */
-    box-shadow: 0 2px 8px rgba(17, 24, 39, 0.04);
+    box-shadow: var(--shadow-soft);
 }
 
-.scandi-input {
-    border-radius: 0.75rem; /* rounded-xl */
-    border: 1px solid #d1d5db; /* gray-300 */
-    padding: 0.75rem 1rem;
-}
+/* Note: .pill and .scandi-input moved to Tailwind plugin (tailwind.config.ts) */
 
 .focus-ring {
     box-shadow: 0 0 0 4px rgba(17, 24, 39, 0.06);
@@ -55,7 +70,7 @@ body {
 /* Accessibility: visible focus ring for keyboard users */
 :focus-visible {
     outline: none;
-    box-shadow: 0 0 0 4px rgba(17, 24, 39, 0.08);
+    box-shadow: 0 0 0 3px rgba(138, 168, 153, 0.22);
     border-radius: 0.75rem;
 }
 
@@ -73,4 +88,92 @@ body {
         transform: none !important;
         opacity: 1 !important;
     }
+}
+
+/* Result overlay backdrop for md+ */
+.results-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.12);
+    z-index: 30;
+}
+
+.result-value {
+    font-size: var(--type-number);
+    font-weight: 700;
+    color: var(--text);
+}
+
+/* Overlay backdrop and overlay animation */
+.results-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 30;
+    backdrop-filter: blur(2px);
+    animation: scandi-backdrop-in 180ms ease-out;
+}
+
+.animate-scandi-fade {
+    animation: scandi-fade-in 200ms ease-out;
+}
+
+@keyframes scandi-backdrop-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scandi-fade-in {
+    from {
+        transform: translateY(-6px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Layout helper: constrain form fields on medium+ screens */
+.field-width {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .field-width {
+        width: 22rem; /* ~352px, readable form width */
+    }
+}
+
+.scandi-card.padded {
+    padding: var(--space-md);
+}
+
+/* Utility: visually-hidden but accessible */
+.sr-only:not(:focus):not(:active) {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* Button primary */
+.btn-primary {
+    background: var(--accent);
+    color: white;
+    padding: 0.6rem 1.1rem;
+    border-radius: 9999px;
+    box-shadow: 0 6px 18px rgba(138, 168, 153, 0.08);
+}
+.btn-primary:active {
+    background: var(--accent-pressed);
 }

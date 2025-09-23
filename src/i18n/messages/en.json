@@ -1,5 +1,6 @@
 {
     "title": "BMR & TDEE Calculator",
+    "sex.label": "Sex",
     "sex.male": "Male",
     "sex.female": "Female",
     "age.label": "Age",

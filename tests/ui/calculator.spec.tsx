@@ -93,9 +93,9 @@ test('calculator calculates BMR/TDEE on submit', async () => {
     const bmrLabel = await findByText(/BMR/i)
     const tdeeLabel = await findByText(/TDEE/i)
 
-    // The numeric value is rendered as the sibling span with class 'text-3xl'
-    const bmrValueEl = bmrLabel.parentElement?.querySelector('.text-3xl')
-    const tdeeValueEl = tdeeLabel.parentElement?.querySelector('.text-3xl')
+    // The numeric value is rendered as the sibling span with class 'result-value'
+    const bmrValueEl = bmrLabel.parentElement?.querySelector('.result-value')
+    const tdeeValueEl = tdeeLabel.parentElement?.querySelector('.result-value')
 
     expect(bmrValueEl).toBeTruthy()
     expect(tdeeValueEl).toBeTruthy()

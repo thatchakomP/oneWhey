@@ -37,12 +37,12 @@ export default function ResultCard({ bmr, tdee, goals, macros }: Props) {
             <div className="grid grid-cols-1 gap-3">
                 <div className="flex items-baseline justify-between">
                     <span className="text-sm text-muted">{last('label.bmr')}</span>
-                    <span className="text-3xl font-semibold">{bmr} kcal</span>
+                    <span className="result-value">{bmr} kcal</span>
                 </div>
 
                 <div className="flex items-baseline justify-between">
                     <span className="text-sm text-muted">{last('label.tdee')}</span>
-                    <span className="text-3xl font-semibold">{tdee} kcal</span>
+                    <span className="result-value">{tdee} kcal</span>
                 </div>
 
                 <div className="pt-3 border-t" style={{ borderColor: 'var(--stroke)' }}>
