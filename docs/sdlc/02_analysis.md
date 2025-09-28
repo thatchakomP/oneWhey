@@ -1,16 +1,41 @@
-# 02 — Analysis
+# 02 — Analysis: Design Integration Issue Root Cause
 
-## Refined Requirements
+## Problem Identification
 
--   Must support locale-prefixed routing `/en` and `/th`. When using plain React (no Next), implement this with `react-router` and a top-level route `/:locale/*` or equivalent.
--   All UI strings must live in `src/i18n/messages/{en,th}.json` and be provided via `react-intl` or `react-i18next` (no hardcoded strings).
--   Calculator formulas deterministic and must pass unit tests.
+**Issue**: User sees plain white background instead of enhanced Scandinavian Health & Wellness design.
 
-## Measurable Acceptance Criteria
+**Root Cause**: Enhanced UI/UX components were applied to wrong component structure:
 
-1. End-to-end: visiting `/en` and completing the form produces expected BMR/TDEE within ±1 kcal of known values.
-2. Unit coverage: `lib/calc.ts` ≥ 90% lines covered by unit tests. Prefer using Vitest (Vite) or Jest depending on the bundler.
-3. PWA: app shows install prompt on supporting platforms and functions offline for previously loaded pages. Use `vite-plugin-pwa` for Vite or Workbox for Webpack/CRA.
+-   ✅ Design system correctly configured in `tailwind.config.ts`
+-   ✅ CSS files properly importing Tailwind and custom styles
+-   ❌ Enhanced components applied to `app/page.tsx` (unused Next.js structure)
+-   ❌ Actual application uses `src/routes/[locale]/index.tsx` (React Router structure)
+
+### Current State Audit
+
+**Existing Architecture:**
+
+-   React Router with locale-based routing (`/` → `/en/` → CalculatorPage)
+-   Internationalization via react-intl
+-   Main component: `src/routes/[locale]/index.tsx`
+-   Support for `/en` and `/th` locales
+-   Form validation with React Hook Form + Zod
+
+**Styling Status:**
+
+-   ✅ Enhanced Tailwind config with design tokens
+-   ✅ CSS custom properties defined in `src/index.css`
+-   ✅ Design system utilities available
+-   ❌ Current CalculatorPage uses legacy class names (e.g., `text-gray-900`)
+-   ❌ Missing application of new design system classes
+
+**Critical Issues Identified:**
+
+-   ⚠️ **Design System Inconsistency**: Dual Tailwind configurations (`tailwind.config.ts` + `tailwind.config.cjs`)
+-   ⚠️ **Accessibility Gaps**: Missing ARIA labels, insufficient color contrast, incomplete keyboard navigation
+-   ⚠️ **Component Inconsistency**: Mixed styling approaches across components
+-   ⚠️ **Performance Bottlenecks**: Unoptimized bundle size, missing Core Web Vitals optimization
+-   ⚠️ **Responsive Design Issues**: Breakpoint inconsistencies, sub-optimal mobile experience
 
 ## Dependency Map
 

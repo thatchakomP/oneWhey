@@ -5,11 +5,14 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
+        "start:test": "vite",
+        "test:playwright": "playwright test --config=playwright.config.ts",
         "preview": "vite preview",
         "typecheck": "tsc --noEmit",
         "test": "vitest --run"
     },
     "devDependencies": {
+        "@playwright/test": "^1.40.0",
         "@hookform/resolvers": "^5.2.2",
         "@tailwindcss/postcss": "^4.1.13",
         "@testing-library/jest-dom": "^6.0.0",

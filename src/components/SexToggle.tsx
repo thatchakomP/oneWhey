@@ -14,12 +14,12 @@ export default function SexToggle({ name = 'sex', value, onChange, labels, ariaL
     const opts: Sex[] = ['male', 'female']
 
     return (
-        <fieldset className="col-span-1 border-b pb-4">
-            <legend className="text-sm font-medium mb-2">{ariaLabel}</legend>
+        <fieldset className="col-span-1 border-b border-stone-200 pb-4">
+            <legend className="text-lg font-medium text-stone-900 mb-2">{ariaLabel}</legend>
             <div
                 role="radiogroup"
                 aria-label={ariaLabel}
-                className="inline-flex bg-panel p-2 rounded-full gap-2 field-width"
+                className="inline-flex bg-stone-100 p-2 rounded-full gap-2 field-width"
             >
                 {opts.map((s) => {
                     const selected = value === s
@@ -28,10 +28,10 @@ export default function SexToggle({ name = 'sex', value, onChange, labels, ariaL
                             key={s}
                             role="presentation"
                             tabIndex={0}
-                            className={`px-4 py-2 rounded-full text-sm cursor-pointer transition duration-150 ease-out flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${
+                            className={`px-4 py-2 rounded-full text-sm cursor-pointer transition duration-200 ease-out flex items-center gap-3 focus-visible min-h-[44px] ${
                                 selected
-                                    ? 'bg-[var(--accent)] text-white shadow'
-                                    : 'text-muted hover:bg-panel'
+                                    ? 'bg-moss text-white shadow-soft'
+                                    : 'text-stone-600 hover:bg-stone-50'
                             }`}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' || e.key === ' ') {

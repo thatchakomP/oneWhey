@@ -1,6 +1,6 @@
 version: 1
 orchestrator:
-    model: GPT-5 mini
+    model: gpt-4.1
     auto: true
     phases:
         - id: planning
@@ -17,9 +17,17 @@ orchestrator:
           instructions: .github/instructions/agent_instructions_pack.md
           active: true
           outputs: [/docs/sdlc/04_implement.md, /ai/agent_memory.json]
+          on_complete: design_qa
+        - id: design_qa
+          model: gpt-4.1
+          role: UI/UX Design QA Specialist
+          instructions: .github/instructions/design-implementation.instructions.md
+          active: true
+          strict_gates: { accessibility: true, visual_regression: true, performance: true }
+          outputs: [/docs/sdlc/04_design_validation.md, /ai/agent_memory.json]
           on_complete: reviewer
         - id: reviewer
-          model: GPT-5 mini
+          model: gpt-4.1
           role: Principal Software Engineer Reviewer
           instructions: .github/instructions/agent_instructions_pack.md
           active: true

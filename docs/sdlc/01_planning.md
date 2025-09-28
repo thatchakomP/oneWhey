@@ -1,8 +1,21 @@
-# 01 — Planning
+# 01 — Planning: UI/UX Enhancement
 
 ## Summary
 
-This document translates the user's REQUIREMENTS.md for the BMR/TDEE Calculator (MVP) into a concise planning artifact for implementation. The user requested to use plain React and pnpm for package management instead of Next.js/npm from the original REQUIREMENTS; the plan below reflects that choice and calls out divergences from the original spec.
+Enhance the oneWhey BMR/TDEE calculator's user interface and user experience to achieve **98% pixel-perfect implementation**, **WCAG 2.2 AA+ accessibility compliance**, and **optimized performance across 7 responsive breakpoints**.
+
+This phase builds upon the existing functional calculator to deliver design excellence, accessibility compliance, and cross-platform optimization while maintaining the current technical foundation.
+
+## Enhanced Scope
+
+### UI/UX Enhancement Focus Areas
+
+-   **Design System Consolidation**: Unify multiple Tailwind configurations into cohesive design system
+-   **Accessibility Excellence**: Achieve WCAG 2.2 AA+ compliance with automated validation
+-   **Responsive Design Mastery**: Optimize across 7 breakpoints with mobile-first approach
+-   **Performance Optimization**: Meet Core Web Vitals targets with 60fps animations
+-   **Visual Polish**: Enhance typography, spacing, micro-interactions, and component consistency
+-   **Cross-Platform Excellence**: Touch-friendly interfaces optimized for all devices
 
 ## Scope
 

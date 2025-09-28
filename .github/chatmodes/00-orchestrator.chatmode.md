@@ -27,7 +27,7 @@ tools:
 'terminal.run',
 'run_tests',
 ]
-model: GPT-5 mini
+model: GPT-4.1
 
 #
 
@@ -65,24 +65,30 @@ Respect repo standards under `/.github/instructions/*.instructions.md`, keep sec
 2. **Planning (read-only)** → `/docs/sdlc/01_planning.md` (Summary, Scope, Context, Requirements & ACs, Assumptions & Unknowns, Implementation Plan, Code Touchpoints, Data/Schema, Testing Strategy, Risks & Mitigations, Rollout & Metrics, Effort & Timeline, Open Questions, Next Steps).
 3. **Analysis (read-only)** → `/docs/sdlc/02_analysis.md` (refined requirements, measurable ACs, risk/impact matrix, data-flow, dependency map).
 4. **Design UX/UI (read-only)** → `/docs/sdlc/03_design_ux.md` (personas, journeys, wireframes, tokens, hierarchy, accessibility, UI acceptance checklist).
-   🆕 **ToT + ReAct:** Produce **≥3 design alternatives**, compare trade-offs, select 1 with rationale mapped to ACs.
+   🆕 **ToT + ReAct:** Produce **≥3 responsive design alternatives** across 7 breakpoints, compare trade-offs, select 1 with rationale mapped to ACs.
 5. **Implement (active)** → `/docs/sdlc/04_implement.md`
     - Propose code diffs; **always show diffs** before applying.
     - Apply incrementally; run gates (typecheck, lint, unit/integration/e2e, coverage, basic security scan).
     - Update memory and emit `agent_output.json`.
       🆕 **ReAct + CoVe:** Before/after applying, run **typecheck + security + tests** and summarize verification steps.
-6. **Reviewer (auto, Claude-style)** → `/docs/sdlc/04_implement_review.md`
-    - **Strict gates**: block if **typecheck fails** or **security risks** are detected.
+6. **🆕 Design QA (active)** → `/docs/sdlc/04_design_validation.md`
+    - **Visual regression testing**: Compare rendered output against design tokens and approved references.
+    - **Accessibility auditing**: WCAG 2.2 AA+ compliance verification with automated and manual checks.
+    - **Performance validation**: Core Web Vitals, 60fps animations, mobile optimization.
+    - **Cross-platform compatibility**: Responsive behavior across 7 breakpoints and multiple browsers/devices.
+    - 🆕 **CoVe**: Independent design verification and UX acceptance criteria validation.
+7. **Reviewer (auto, Claude-style)** → `/docs/sdlc/04_implement_review.md`
+    - **Strict gates**: block if **typecheck fails** or **security risks** are detected or **accessibility violations** found.
     - **Soft gates**: recommend (do not block) on linting, coverage, refactoring, performance.
     - Record findings to `/docs/sdlc/04_implement_review.md` and log decisions to `/ai/agent_memory.json`.
-    - 🆕 **CoVe**: Independently re-run verification and AC cross-check.
-7. **Testing (active)** → `/docs/sdlc/05_testing.md`
-    - Add/adjust tests to reach coverage target.
+    - 🆕 **CoVe**: Independently re-run verification and AC cross-check with design compliance validation.
+8. **Testing (active)** → `/docs/sdlc/05_testing.md`
+    - Add/adjust tests to reach coverage target including visual regression and accessibility tests.
     - **Self-repair loop** for failures: minimal fix → re-run checks → update memory.
-    - 🆕 **ReAct on failures**: reason about root cause → minimal fix → verify.
-8. **Maintenance (active)** → `/docs/sdlc/06_maintenance.md`
-    - Safe refactors, dep updates, security hardening; re-run all gates; update CHANGELOG; write back to memory.
-    - 🆕 **ToT optional**: explore ≥2 strategies; pick safest with rollback plan.
+    - 🆕 **ReAct on failures**: reason about root cause → minimal fix → verify with design impact assessment.
+9. **Maintenance (active)** → `/docs/sdlc/06_maintenance.md`
+    - Safe refactors, dep updates, security hardening; re-run all gates including design regression tests; update CHANGELOG; write back to memory.
+    - 🆕 **ToT optional**: explore ≥2 strategies; pick safest with rollback plan and design system impact analysis.
 9. **Impact Review** (append to Maintenance doc) → modules touched, downstream effects, risks, rollback plan.
 
 # Auto-apply (non-code only)

@@ -1,32 +1,36 @@
-# 03 — Design & UX
+# 03 — Design & UX: UI Enhancement with ToT + ReAct
 
-## Personas
+## 🎯 Design Mission
 
--   Casual user: wants quick estimate on mobile.
--   Fitness enthusiast: cares about body-fat and accuracy.
+Transform oneWhey BMR/TDEE calculator into a **design-first, accessibility-focused, performance-optimized** web application that delivers exceptional user experience across all devices and user capabilities.
 
 ## User Journey
 
 1. Land on `/en` or `/th` → immediate visible calculator (no sign-in) → fill inputs → view results and goal presets → optionally switch locale or units.
 
-## ToT: 3 Design Alternatives
+# 03 — Design: Style Application Strategy
 
-1. Minimal Tailwind (Selected - SAFE)
+## Design Integration Plan
 
-    - Plain Tailwind CSS primitives, small bundle, fastest to implement.
-    - Pros: minimal dependencies, small bundle, easy to audit for accessibility.
-    - Cons: more dev time for polished components.
+**Objective**: Apply existing Scandinavian Health & Wellness design system to the active CalculatorPage component while preserving i18n functionality.
 
-2. Headless UI + Tailwind
+### Current vs. Target Styling
 
-    - Use Headless UI primitives for accessible components + Tailwind for styling.
-    - Pros: more accessible defaults, faster dev for form controls.
-    - Cons: adds dependency surface.
+**Current CalculatorPage Issues:**
 
-3. Radix + Tailwind
-    - Use Radix primitives for accessible low-level UI.
-    - Pros: robust, accessible primitives. Good for future expansion.
-    - Cons: larger bundle and slightly more setup.
+-   Uses `text-gray-900` instead of design system colors
+-   No background styling (plain white)
+-   Generic input styling without design system utilities
+-   Missing card styling for form container
+-   No visual hierarchy or spacing consistency
+
+**Target Enhancement:**
+
+-   Apply `bg-stone-50` background for warmth
+-   Use design system color tokens (`text-stone-900`, `text-stone-600`)
+-   Implement `.scandi-input` utilities for form fields
+-   Add `.card` styling to form container
+-   Apply proper spacing with 8px baseline grid
 
 ## Selected Option and Rationale
 

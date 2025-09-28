@@ -96,10 +96,10 @@ export default function CalculatorPage() {
     }, [overlayOpen])
 
     return (
-        <main className="min-h-screen flex items-start justify-start py-8 px-8">
+        <main className="min-h-screen bg-stone-50 flex items-start justify-start py-8 px-8">
             <div className="container max-w-6xl mx-auto">
-                <div className="scandi-card p-6">
-                    <h1 className="text-2xl font-semibold text-gray-900 mb-4">
+                <div className="card">
+                    <h1 className="text-2xl font-semibold text-stone-900 mb-4">
                         {intl.formatMessage({ id: 'title' })}
                     </h1>
 
@@ -125,7 +125,7 @@ export default function CalculatorPage() {
                             </div>
 
                             <div className="col-span-1 flex flex-col space-y-1">
-                                <label htmlFor="age" className="text-xl font-medium text-text">
+                                <label htmlFor="age" className="text-lg font-medium text-stone-900">
                                     {intl.formatMessage({ id: 'age.label' })}
                                 </label>
                                 <input
@@ -133,17 +133,20 @@ export default function CalculatorPage() {
                                     type="number"
                                     placeholder="30"
                                     {...register('age', { valueAsNumber: true })}
-                                    className="mt-2 scandi-input focus:outline-none focus-ring w-full md:max-w-md field-width"
+                                    className="mt-2 scandi-input focus-visible w-full md:max-w-md field-width"
                                 />
                                 {errors.age && (
-                                    <p role="alert" className="text-sm text-red-600">
+                                    <p role="alert" className="text-sm text-semantic-error">
                                         {String(errors.age.message)}
                                     </p>
                                 )}
                             </div>
 
                             <div className="col-span-1 flex flex-col space-y-1">
-                                <label htmlFor="height" className="text-xl font-medium text-text">
+                                <label
+                                    htmlFor="height"
+                                    className="text-lg font-medium text-stone-900"
+                                >
                                     {intl.formatMessage({ id: 'height.label' })}
                                 </label>
                                 <input
@@ -151,17 +154,20 @@ export default function CalculatorPage() {
                                     type="number"
                                     placeholder="170 cm"
                                     {...register('height', { valueAsNumber: true })}
-                                    className="mt-2 scandi-input focus:outline-none focus-ring w-full md:max-w-md field-width"
+                                    className="mt-2 scandi-input focus-visible w-full md:max-w-md field-width"
                                 />
                                 {errors.height && (
-                                    <p role="alert" className="text-sm text-red-600">
+                                    <p role="alert" className="text-sm text-semantic-error">
                                         {String(errors.height.message)}
                                     </p>
                                 )}
                             </div>
 
                             <div className="col-span-1 flex flex-col space-y-1">
-                                <label htmlFor="weight" className="text-xl font-medium text-text">
+                                <label
+                                    htmlFor="weight"
+                                    className="text-lg font-medium text-stone-900"
+                                >
                                     {intl.formatMessage({ id: 'weight.label' })}
                                 </label>
                                 <input
@@ -169,10 +175,10 @@ export default function CalculatorPage() {
                                     type="number"
                                     placeholder="65 kg"
                                     {...register('weight', { valueAsNumber: true })}
-                                    className="mt-2 scandi-input focus:outline-none focus-ring w-full md:max-w-md field-width"
+                                    className="mt-2 scandi-input focus-visible w-full md:max-w-md field-width"
                                 />
                                 {errors.weight && (
-                                    <p role="alert" className="text-sm text-red-600">
+                                    <p role="alert" className="text-sm text-semantic-error">
                                         {String(errors.weight.message)}
                                     </p>
                                 )}
@@ -183,13 +189,16 @@ export default function CalculatorPage() {
                             {/* Body fat removed per request; using Mifflin-St Jeor and macros instead */}
 
                             <div className="col-span-1 flex flex-col space-y-1">
-                                <label htmlFor="activity" className="text-xl font-medium text-text">
+                                <label
+                                    htmlFor="activity"
+                                    className="text-lg font-medium text-stone-900"
+                                >
                                     Activity
                                 </label>
                                 <select
                                     id="activity"
                                     {...register('activity')}
-                                    className="mt-2 scandi-input focus:outline-none focus-ring w-full md:max-w-md field-width"
+                                    className="mt-2 scandi-input focus-visible w-full md:max-w-md field-width"
                                 >
                                     <option value="sedentary">
                                         {intl.formatMessage({ id: 'activity.sedentary' })}
@@ -214,7 +223,7 @@ export default function CalculatorPage() {
                                 <button
                                     ref={calculateBtnRef}
                                     type="submit"
-                                    className="px-6 py-3 rounded-2xl bg-[var(--accent)] text-white font-medium"
+                                    className="min-h-[44px] px-6 py-3 rounded-xl bg-moss text-white font-medium hover:opacity-90 focus-visible transition-all duration-200"
                                 >
                                     Calculate
                                 </button>
@@ -224,7 +233,7 @@ export default function CalculatorPage() {
                         <aside className="md:w-1/3">
                             <div aria-live="polite" className="h-full">
                                 {result ? (
-                                    <div key={resultKey} className="animate-scandi-fade">
+                                    <div key={resultKey} className="animate-fade-in">
                                         {/* backdrop and fixed overlay for md+ */}
                                         <div className="hidden md:block">
                                             <div
@@ -236,18 +245,12 @@ export default function CalculatorPage() {
                                             />
                                         </div>
 
-                                        <div
-                                            className="md:static md:float-right md:w-full z-40 md:pl-6"
-                                            style={{
-                                                borderLeft: '1px solid var(--stroke)',
-                                                boxShadow: 'var(--shadow-soft)',
-                                            }}
-                                        >
-                                            <div className="flex justify-end mb-2">
+                                        <div className="card md:static md:float-right md:w-full z-40 md:ml-6">
+                                            <div className="flex justify-end mb-4">
                                                 <button
                                                     ref={closeBtnRef}
                                                     aria-label="Close results"
-                                                    className="p-2 rounded-full text-muted hover:bg-panel"
+                                                    className="p-2 rounded-full text-stone-500 hover:bg-stone-100 focus-visible"
                                                     onClick={() => {
                                                         setResult(null)
                                                         setOverlayOpen(false)
@@ -265,7 +268,7 @@ export default function CalculatorPage() {
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="text-sm text-muted">
+                                    <div className="text-sm text-stone-500 p-6 bg-stone-100 rounded-xl border border-stone-200">
                                         {intl.formatMessage({ id: 'placeholders.enter_values' })}
                                     </div>
                                 )}
