@@ -1,0 +1,22 @@
+{
+    "title": "BMR & TDEE Calculator",
+    "sex": "Sex",
+    "male": "Male",
+    "female": "Female",
+    "age": "Age",
+    "height": "Height (cm)",
+    "weight": "Weight (kg)",
+    "units": "Units",
+    "metric": "Metric (kg, cm)",
+    "imperial": "Imperial (lb, in)",
+    "activity": "Activity level",
+    "calculate": "Calculate",
+    "results": "Results",
+    "bmr": "BMR",
+    "tdee": "TDEE",
+    "protein": "Protein",
+    "carbs": "Carbs",
+    "fat": "Fat",
+    "required": "Required",
+    "invalidNumber": "Please enter a valid number"
+}

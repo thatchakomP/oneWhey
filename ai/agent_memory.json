@@ -83,6 +83,11 @@
             "phase": "maintenance_run",
             "timestamp": "2025-09-28T16:12:00Z",
             "summary": "Removed legacy --page-bg variable and switched page background to Tailwind-driven classes (bg-stone-50). Verified production build and emitted component selectors (.card, .scandi-input, .pill). Dev server run started for local visual check."
+        },
+        {
+            "phase": "pwa_enable",
+            "timestamp": "2025-09-28T16:30:00Z",
+            "summary": "Enabled next-pwa in next.config.mjs (production-only), added public/sw.js placeholder, created client-side PwaRegister component and wired it into app/layout.tsx. Updated Tailwind/global CSS to avoid PostCSS @apply errors. Ran production build; build succeeded."
         }
     ]
 }
