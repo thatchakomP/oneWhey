@@ -1,0 +1,30 @@
+/* Central design tokens (pixels, radii, sizes, colors) */
+:root {
+    /* colors */
+    --color-alabaster: #fcfff8;
+    --color-pebble: #d5d0c8;
+    --color-driftwood: #b8ad9d;
+    --color-bark: #967f6c;
+    --color-timber: #674e3c;
+    --color-shadow: #241c17;
+
+    /* design scale (pixels) */
+    --s-1: 4px;
+    --s-2: 8px;
+    --s-3: 12px;
+    --s-4: 16px;
+    --s-6: 24px;
+
+    /* radii */
+    --r-xs: 4px; /* small */
+    --r-sm: 6px; /* medium */
+    --r-md: 8px; /* medium-large */
+    --r-lg: 12px; /* large */
+
+    /* font sizes */
+    --fs-sm: 14px;
+    --fs-base: 15px;
+
+    /* layout */
+    --container-max-width: 896px;
+}

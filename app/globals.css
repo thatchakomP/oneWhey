@@ -9,20 +9,39 @@
     --color-bark: #967f6c;
     --color-timber: #674e3c;
     --color-shadow: #241c17;
+    /* design scale (pixels) */
+    --s-1: 4px;
+    --s-2: 8px;
+    --s-3: 12px;
+    --s-4: 16px;
+    --s-6: 24px;
+
+    /* radii */
+    --r-xs: 4px; /* small */
+    --r-sm: 6px; /* medium */
+    --r-md: 8px; /* medium-large */
+    --r-lg: 12px; /* large */
+
+    /* font sizes */
+    --fs-sm: 14px;
+    --fs-base: 15px;
+
+    /* layout */
+    --container-max-width: 896px;
 }
 
 @layer components {
     .card {
-        border-radius: 0.75rem; /* rounded-xl */
-        padding: 1.5rem; /* p-6 */
+        border-radius: var(--r-lg);
+        padding: var(--s-6);
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* shadow-sm */
         background-color: var(--color-pebble);
         opacity: 0.9;
     }
     .scandi-input {
         width: 100%;
-        border-radius: 0.375rem; /* rounded-md */
-        padding: 0.5rem 0.75rem; /* py-2 px-3 */
+        border-radius: var(--r-sm);
+        padding: var(--s-2) var(--s-3);
         border: 1px solid var(--color-pebble);
         background-color: var(--color-alabaster);
         outline: none;
@@ -30,43 +49,16 @@
         box-shadow: 0 0 0 3px rgba(103, 78, 60, 0.08);
         color: var(--color-shadow);
     }
-    .action-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 0.375rem;
-        padding: 0.5rem 1rem;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        background-color: var(--color-timber);
-        color: var(--color-alabaster);
-    }
-    .action-btn:hover {
-        background-color: var(--color-bark);
-    }
-    .muted-text {
-        color: var(--color-driftwood);
-        opacity: 0.8;
-    }
-    .kbd {
-        display: inline-block;
-        padding: 0.25rem 0.5rem;
-        border-radius: 0.25rem;
-        background-color: var(--color-pebble);
-        border: 1px solid var(--color-pebble);
-        color: var(--color-shadow);
-    }
-
-    /* PWA update toast */
     .pwa-toast {
         position: fixed;
-        right: 1rem;
-        bottom: 1rem;
+        right: var(--s-4);
+        bottom: var(--s-4);
         z-index: 9999;
         display: flex;
-        gap: 0.75rem;
+        gap: var(--s-3);
         align-items: center;
-        padding: 0.5rem 0.75rem;
-        border-radius: 0.5rem;
+        padding: var(--s-2) var(--s-3);
+        border-radius: var(--r-md);
         background-color: var(--color-shadow); /* dark background */
         color: var(--color-alabaster);
         box-shadow: 0 8px 30px rgba(36, 28, 23, 0.35);
@@ -78,12 +70,12 @@
     }
 
     .pwa-toast .pwa-message {
-        font-size: 0.9rem;
+        font-size: var(--fs-sm);
     }
 
     .pwa-toast .pwa-actions {
         display: flex;
-        gap: 0.5rem;
+        gap: var(--s-2);
         align-items: center;
     }
 
@@ -91,9 +83,9 @@
         background: transparent;
         border: 1px solid rgba(252, 255, 248, 0.12);
         color: inherit;
-        padding: 0.35rem 0.6rem;
-        border-radius: 0.375rem;
-        font-size: 0.85rem;
+        padding: calc(var(--s-1) + 2px) calc(var(--s-2) + 2px);
+        border-radius: var(--r-sm);
+        font-size: var(--fs-sm);
         cursor: pointer;
     }
 
@@ -145,18 +137,18 @@
         .grid-cols-responsive {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            gap: var(--s-4);
         }
     }
 
     /* Centered app container: constrains content and centers on large viewports */
     .container-centered {
         width: 100%;
-        max-width: 56rem; /* ~896px, similar to max-w-3xl but explicit */
+        max-width: var(--container-max-width);
         margin-left: auto;
         margin-right: auto;
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding-left: var(--s-4);
+        padding-right: var(--s-4);
     }
 
     /* Ensure cards don't stretch beyond their container */
@@ -169,22 +161,36 @@
     .card .field {
         /* keep a small vertical padding (4px top/bottom) and no horizontal padding
            so left edges line up with .card padding */
-        padding: 0.25rem 0; /* 0.25rem ≈ 4px vertical */
+        padding: var(--s-1) 0;
         box-sizing: border-box;
 
         /* layout as a vertical stack with small vertical gap between label & input */
         display: flex;
         flex-direction: column;
         align-items: stretch; /* make children (label + input) fill available width */
-        gap: 0.5rem;
+        gap: var(--s-2);
+    }
+
+    /* Ensure field wrappers take full width of their grid cell */
+    .card .field {
+        width: 100%;
     }
 
     .card .field label {
         width: 100%;
         text-align: left;
         margin: 0; /* remove any default margins that could offset alignment */
-        font-size: 0.95rem;
+        font-size: var(--fs-base);
         color: #000000; /* black labels as requested */
+        padding-top: var(--s-1);
+    }
+
+    /* Inputs should be full width inside their field */
+    .scandi-input,
+    .card .field input,
+    .card .field select {
+        width: 100%;
+        box-sizing: border-box;
     }
 
     /* Ensure the two grid columns don't add extra inset and align their inner content */

@@ -35,7 +35,7 @@ export default function InputField({
                 placeholder={placeholder}
                 aria-invalid={!!error}
                 aria-describedby={error ? `${id}-error` : undefined}
-                className="scandi-input"
+                className="scandi-input w-full"
             />
             {hint && <p className="text-xs muted-text mt-1">{hint}</p>}
             {error && (

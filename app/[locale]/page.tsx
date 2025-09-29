@@ -5,14 +5,7 @@ import en from '../../locales/en.json'
 import th from '../../locales/th.json'
 import InputField from '../../src/components/InputField'
 import ResultCard from '../../src/components/ResultCard'
-import {
-    mifflinStJeor,
-    katchMcArdle,
-    calcTDEE,
-    macrosFromCalories,
-    kgFromLbs,
-    cmFromInches,
-} from '../../src/lib/calc'
+import { mifflinStJeor, calcTDEE, macrosFromCalories } from '../../src/lib/calc'
 
 const locales: Record<string, any> = { en, th }
 
@@ -28,9 +21,8 @@ export default function LocalePage() {
     const [ageError, setAgeError] = useState<string>('')
     const [weightError, setWeightError] = useState<string>('')
     const [heightError, setHeightError] = useState<string>('')
-    const [units, setUnits] = useState<'metric' | 'imperial'>('metric')
+    /* units selection removed — inputs are metric (kg/cm) */
     const [activity, setActivity] = useState<any>('moderate')
-    // bodyFat input removed — always use Mifflin-St Jeor for BMR
 
     const [result, setResult] = useState<any>(null)
 
@@ -51,12 +43,9 @@ export default function LocalePage() {
             return
         }
 
-        let kg = weightNum
-        let cm = heightNum
-        if (units === 'imperial') {
-            kg = kgFromLbs(weightNum)
-            cm = cmFromInches(heightNum)
-        }
+        // treat inputs as metric
+        const kg = weightNum
+        const cm = heightNum
 
         const bmr = mifflinStJeor(sex, ageNum, kg, cm)
         const tdee = calcTDEE(bmr, activity)
@@ -70,6 +59,7 @@ export default function LocalePage() {
             <h1 className="text-2xl font-bold text-shadow">{t.title}</h1>
             <section className="card mt-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Left column: sex selector + inputs (inputs arranged in nested grid) */}
                     <div>
                         <label className="block text-sm muted-text">{t.sex}</label>
                         <div className="flex gap-2 mb-3">
@@ -87,91 +77,78 @@ export default function LocalePage() {
                             </button>
                         </div>
 
-                        <InputField
-                            id="age"
-                            label={t.age}
-                            type="number"
-                            value={age}
-                            onChange={(e) => {
-                                setAge(e.target.value)
-                                const err = !e.target.value
-                                    ? t.required
-                                    : isNaN(Number(e.target.value))
-                                    ? t.invalidNumber
-                                    : ''
-                                setAgeError(err)
-                            }}
-                            placeholder="Please enter age"
-                            error={ageError}
-                        />
-                        <InputField
-                            id="height"
-                            label={t.height}
-                            type="number"
-                            value={height}
-                            onChange={(e) => {
-                                setHeight(e.target.value)
-                                const err = !e.target.value
-                                    ? t.required
-                                    : isNaN(Number(e.target.value))
-                                    ? t.invalidNumber
-                                    : ''
-                                setHeightError(err)
-                            }}
-                            placeholder="Please enter height"
-                            error={heightError}
-                        />
-                        <InputField
-                            id="weight"
-                            label={t.weight}
-                            type="number"
-                            value={weight}
-                            onChange={(e) => {
-                                setWeight(e.target.value)
-                                const err = !e.target.value
-                                    ? t.required
-                                    : isNaN(Number(e.target.value))
-                                    ? t.invalidNumber
-                                    : ''
-                                setWeightError(err)
-                            }}
-                            placeholder="Please enter weight"
-                            error={weightError}
-                        />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <InputField
+                                id="age"
+                                label={t.age}
+                                type="number"
+                                value={age}
+                                onChange={(e) => {
+                                    setAge(e.target.value)
+                                    const err = !e.target.value
+                                        ? t.required
+                                        : isNaN(Number(e.target.value))
+                                        ? t.invalidNumber
+                                        : ''
+                                    setAgeError(err)
+                                }}
+                                placeholder="Please enter age"
+                                error={ageError}
+                            />
 
-                        <label className="block text-sm muted-text mt-2">{t.units}</label>
-                        <div className="flex gap-2 mb-3">
-                            <button
-                                onClick={() => setUnits('metric')}
-                                className={`kbd ${units === 'metric' ? 'action-btn' : ''}`}
-                            >
-                                {t.metric}
-                            </button>
-                            <button
-                                onClick={() => setUnits('imperial')}
-                                className={`kbd ${units === 'imperial' ? 'action-btn' : ''}`}
-                            >
-                                {t.imperial}
-                            </button>
+                            <InputField
+                                id="height"
+                                label={t.height}
+                                type="number"
+                                value={height}
+                                onChange={(e) => {
+                                    setHeight(e.target.value)
+                                    const err = !e.target.value
+                                        ? t.required
+                                        : isNaN(Number(e.target.value))
+                                        ? t.invalidNumber
+                                        : ''
+                                    setHeightError(err)
+                                }}
+                                placeholder="Please enter height"
+                                error={heightError}
+                            />
+
+                            <InputField
+                                id="weight"
+                                label={t.weight}
+                                type="number"
+                                value={weight}
+                                onChange={(e) => {
+                                    setWeight(e.target.value)
+                                    const err = !e.target.value
+                                        ? t.required
+                                        : isNaN(Number(e.target.value))
+                                        ? t.invalidNumber
+                                        : ''
+                                    setWeightError(err)
+                                }}
+                                placeholder="Please enter weight"
+                                error={weightError}
+                            />
+
+                            <div>
+                                <label className="block text-sm muted-text">{t.activity}</label>
+                                <select
+                                    className="scandi-input w-full"
+                                    value={activity}
+                                    onChange={(e) => setActivity(e.target.value)}
+                                >
+                                    <option value="sedentary">Sedentary</option>
+                                    <option value="light">Light</option>
+                                    <option value="moderate">Moderate</option>
+                                    <option value="active">Active</option>
+                                    <option value="very">Very active</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <label className="block text-sm muted-text">{t.activity}</label>
-                        <select
-                            className="scandi-input"
-                            value={activity}
-                            onChange={(e) => setActivity(e.target.value)}
-                        >
-                            <option value="sedentary">Sedentary</option>
-                            <option value="light">Light</option>
-                            <option value="moderate">Moderate</option>
-                            <option value="active">Active</option>
-                            <option value="very">Very active</option>
-                        </select>
-
-                        {/* body fat field removed per request */}
-
                         <div className="mt-4">
-                            {/** disable when there are validation errors or required fields missing */}
                             <button
                                 className={`action-btn ${
                                     ageError ||
@@ -200,6 +177,7 @@ export default function LocalePage() {
                         </div>
                     </div>
 
+                    {/* Right column: results */}
                     <div>
                         {result ? (
                             <ResultCard
